@@ -18,4 +18,9 @@ public:
         return {num.x / denom, num.y / denom};
     }
     double mag() const { return sqrt(x * x + y * y); }
+    double mag2() const
+    {
+        double res = mag();
+        return res * res;
+    }
 };
