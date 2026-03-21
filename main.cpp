@@ -21,6 +21,23 @@ void drawFractal(const Fractaler &fractaler, int *pixels)
         }
     }
 }
+void zoom(bool in = true)
+{
+    Vector2 mouse = GetMousePosition();
+    if (mouse.x < canvas.width)
+    {
+        double factor = in ? 0.25 : 1.0;
+        double mouseX = minX + (mouse.x / canvas.width) * (maxX - minX);
+        double mouseY = maxY - (mouse.y / canvas.height) * (maxY - minY);
+        double rangeX = (maxX - minX) * factor;
+        double rangeY = (maxY - minY) * factor;
+        minX = mouseX - rangeX;
+        maxX = mouseX + rangeX;
+        minY = mouseY - rangeY;
+        maxY = mouseY + rangeY;
+    }
+}
+
 int main(void)
 {
     bool needsUpdate = false;
@@ -45,7 +62,18 @@ int main(void)
             needsUpdate = false;
         }
         DrawTexture(tex, 0, 0, WHITE);
-     if (editAlgsMode)
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            zoom();
+            needsUpdate = true;
+        }
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+        {
+            zoom(false);
+            needsUpdate = true;
+        }
+
+        if (editAlgsMode)
             GuiLock();
         if (GuiButton({canvas.width + controlsOffset, y + controlsHeight, controlsWidth - controlsOffset, controlsHeight}, "Start"))
         {
