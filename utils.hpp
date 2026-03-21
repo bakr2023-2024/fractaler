@@ -15,14 +15,11 @@ public:
     }
     Complex operator^(const Complex &oth) const { return pow(oth.x, oth.y); }
     double mag() const { return sqrt(x * x + y * y); }
-    double mag2() const
-    {
-        double res = mag();
-        return res * res;
-    }
+    double mag2() const { return x * x + y * y; }
     Complex pow(double x, double y) const
     {
+        double r = mag();
         double e = exp(x);
-        return Complex{e * cos(y), e * sin(y)};
+        return Complex{r * e * cos(y), r * e * sin(y)};
     }
 };

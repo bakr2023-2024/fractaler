@@ -13,7 +13,7 @@ private:
 public:
     double width, height, maxItrs;
     double BAILOUT = 4.0;
-    Plotter plot;
+    Plotter plot = nullptr;
     Fractaler(double width, double height, int maxItrs)
     {
         this->width = width;

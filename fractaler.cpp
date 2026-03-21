@@ -10,7 +10,7 @@ int Fractaler::mandelbrot(Complex c)
 {
     Complex z{0, 0};
     int itrs = 0;
-    while (z.mag2() <= BAILOUT && itrs < maxItrs)
+    while (z.x * z.x + z.y * z.y <= BAILOUT && itrs < maxItrs)
     {
         z = z * z + c;
         itrs++;
