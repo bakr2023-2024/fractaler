@@ -4,7 +4,8 @@
 enum Algs
 {
     MULTIBROT,
-    JULIA
+    JULIA,
+    BURNING_SHIP
 };
 using Plotter = int (*)(Complex);
 struct Params
@@ -19,4 +20,5 @@ extern Plotter plotters[];
 int getColor(int itrs);
 int multibrot(Complex c);
 int julia(Complex c);
+int burningShip(Complex c);
 void setPlotter(Algs alg);

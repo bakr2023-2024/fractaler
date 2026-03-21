@@ -2,7 +2,7 @@
 Params params = {};
 int maxItrs = 100;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia};
+Plotter plotters[] = {multibrot, julia, burningShip};
 void setPlotter(Algs alg) { plot = plotters[(int)alg]; }
 int getColor(int itrs)
 {
@@ -29,6 +29,17 @@ int julia(Complex z)
     while (z.mag2() <= BAILOUT && itrs < maxItrs)
     {
         z = z.power(params.P) + c;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int burningShip(Complex z)
+{
+    int itrs = 0;
+    Complex c = (params.cx == 0 && params.cy == 0) ? z : Complex{params.cx, params.cy};
+    while (z.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        z = Complex{abs(z.x), -abs(z.y)}.power(params.P) + c;
         itrs++;
     }
     return getColor(itrs);

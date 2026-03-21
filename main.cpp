@@ -61,6 +61,7 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 }
 int main(void)
 {
+    const char *algs = "Multibrot;Julia;Burning Ship";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";
@@ -74,7 +75,6 @@ int main(void)
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     int maxIterations = 100;
-    const char *algs = "Multibrot;Julia";
     int algChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
