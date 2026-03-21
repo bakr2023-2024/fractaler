@@ -15,6 +15,7 @@ struct Params
 extern Params params;
 extern int maxItrs;
 extern Plotter plot;
+extern Plotter plotters[];
 int getColor(int itrs);
 int multibrot(Complex c);
 int julia(Complex c);

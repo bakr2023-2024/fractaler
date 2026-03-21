@@ -2,19 +2,14 @@
 Params params = {};
 int maxItrs = 100;
 Plotter plot = nullptr;
+Plotter plotters[] = {multibrot, julia};
+void setPlotter(Algs alg) { plot = plotters[(int)alg]; }
 int getColor(int itrs)
 {
     if (itrs == maxItrs)
         return 0xFF000000;
     int c = (itrs * 255) / maxItrs;
     return (255 << 24) | (c << 16) | (c << 8) | c;
-}
-void setPlotter(Algs alg)
-{
-    if (alg == MULTIBROT)
-        plot = multibrot;
-    plot = alg == MULTIBROT ? multibrot : alg == JULIA ? julia
-                                                       : nullptr;
 }
 int multibrot(Complex c)
 {
