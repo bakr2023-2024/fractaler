@@ -37,7 +37,13 @@ void zoom(bool in = true)
         maxY = mouseY + rangeY;
     }
 }
-
+void reset()
+{
+    minX = -2.5;
+    maxX = 1.5;
+    minY = -1.5;
+    maxY = 1.5;
+}
 int main(void)
 {
     bool needsUpdate = false;
@@ -72,7 +78,11 @@ int main(void)
             zoom(false);
             needsUpdate = true;
         }
-
+        if (IsKeyPressed(KEY_R))
+        {
+            reset();
+            needsUpdate = true;
+        }
         if (editAlgsMode)
             GuiLock();
         if (GuiButton({canvas.width + controlsOffset, y + controlsHeight, controlsWidth - controlsOffset, controlsHeight}, "Start"))
