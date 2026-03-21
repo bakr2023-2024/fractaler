@@ -46,14 +46,31 @@ void reset()
     minY = -1.5;
     maxY = 1.5;
 }
+void createDoubleInput(Rectangle &pos, const char *label, char *input, double &val, bool &editMode)
+{
+    pos.x = canvas.width;
+    pos.width = controlsOffset;
+    GuiLabel(pos, label);
+    pos.x = canvas.width + controlsOffset;
+    pos.width = controlsWidth - controlsOffset;
+    if (GuiTextBox(pos, input, 16, editMode))
+        editMode = !editMode;
+    if (!editMode)
+        val = atof(input);
+    pos.y += controlsHeight;
+}
 int main(void)
 {
+    char pInput[16] = "2";
+    char qInput[16] = "2";
     bool needsUpdate = false;
+    bool editPInputMode = false;
+    bool editQInputMode = false;
     bool editAlgsMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     int maxIterations = 100;
-    const char *algs = "Mandelbrot";
+    const char *algs = "Mul";
     int algChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
@@ -92,12 +109,16 @@ int main(void)
         if (editAlgsMode)
             GuiLock();
         controlsPos.y = controlsHeight;
+
+        createDoubleInput(controlsPos, "P", pInput, params.P, editPInputMode);
+        createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
+
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
-        {
-            maxItrs = maxIterations;
             editMaxItrsMode = !editMaxItrsMode;
-        }
+        if (!editMaxItrsMode)
+            maxItrs = maxIterations;
         controlsPos.y += controlsHeight;
+
         if (GuiButton(controlsPos, "Start"))
         {
             setPlotter((Algs)algChoice);
@@ -105,6 +126,7 @@ int main(void)
             needsUpdate = true;
         }
         controlsPos.y += controlsHeight;
+
         controlsPos.y = 0;
         if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
             editAlgsMode = !editAlgsMode;
