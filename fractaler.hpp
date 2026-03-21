@@ -6,6 +6,12 @@ enum Algs
     MANDELBROT,
 };
 using Plotter = int (*)(Complex);
+struct Params
+{
+    double P, Q;
+};
+// params
+extern Params params;
 extern double maxItrs;
 extern Plotter plot;
 int getColor(int itrs);
