@@ -74,7 +74,7 @@ int main(void)
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     int maxIterations = 100;
-    const char *algs = "Multibrot";
+    const char *algs = "Multibrot;Julia";
     int algChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
@@ -134,10 +134,10 @@ int main(void)
         controlsPos.y += controlsHeight;
 
         controlsPos.y = 0;
-        if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
-            editAlgsMode = !editAlgsMode;
         if (editAlgsMode)
             GuiUnlock();
+        if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
+            editAlgsMode = !editAlgsMode;
         EndDrawing();
     }
 }

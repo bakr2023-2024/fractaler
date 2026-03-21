@@ -1,6 +1,6 @@
 #include "fractaler.hpp"
-Params params = {2, 2};
-double maxItrs = 100;
+Params params = {};
+int maxItrs = 100;
 Plotter plot = nullptr;
 int getColor(int itrs)
 {
@@ -11,13 +11,27 @@ int getColor(int itrs)
 }
 void setPlotter(Algs alg)
 {
-    plot = alg == MULTIBROT ? multibrot : nullptr;
+    if (alg == MULTIBROT)
+        plot = multibrot;
+    plot = alg == MULTIBROT ? multibrot : alg == JULIA ? julia
+                                                       : nullptr;
 }
 int multibrot(Complex c)
 {
-    Complex z{0, 0};
     int itrs = 0;
-    while (z.x * z.x + z.y * z.y <= BAILOUT && itrs < maxItrs)
+    Complex z{0, 0};
+    while (z.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        z = z.power(params.P) + c;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int julia(Complex z)
+{
+    int itrs = 0;
+    Complex c{params.cx, params.cy};
+    while (z.mag2() <= BAILOUT && itrs < maxItrs)
     {
         z = z.power(params.P) + c;
         itrs++;

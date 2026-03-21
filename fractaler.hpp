@@ -4,6 +4,7 @@
 enum Algs
 {
     MULTIBROT,
+    JULIA
 };
 using Plotter = int (*)(Complex);
 struct Params
@@ -12,8 +13,9 @@ struct Params
 };
 // params
 extern Params params;
-extern double maxItrs;
+extern int maxItrs;
 extern Plotter plot;
 int getColor(int itrs);
 int multibrot(Complex c);
+int julia(Complex c);
 void setPlotter(Algs alg);
