@@ -61,11 +61,15 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 }
 int main(void)
 {
-    char pInput[16] = "2";
-    char qInput[16] = "2";
+    char pInput[16] = "0";
+    char qInput[16] = "0";
+    char cxInput[16] = "0";
+    char cyInput[16] = "0";
     bool needsUpdate = false;
     bool editPInputMode = false;
     bool editQInputMode = false;
+    bool editCxInputMode = false;
+    bool editCyInputMode = false;
     bool editAlgsMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
@@ -112,6 +116,8 @@ int main(void)
 
         createDoubleInput(controlsPos, "P", pInput, params.P, editPInputMode);
         createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
+        createDoubleInput(controlsPos, "cx", cxInput, params.cx, editCxInputMode);
+        createDoubleInput(controlsPos, "cy", cyInput, params.cy, editCyInputMode);
 
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
             editMaxItrsMode = !editMaxItrsMode;
