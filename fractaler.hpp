@@ -8,7 +8,7 @@ enum Algs
 using Plotter = int (*)(Complex);
 struct Params
 {
-    double P, Q;
+    double P, Q, cx, cy = 0;
 };
 // params
 extern Params params;
