@@ -70,7 +70,7 @@ int main(void)
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     int maxIterations = 100;
-    const char *algs = "Mul";
+    const char *algs = "Multibrot";
     int algChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);

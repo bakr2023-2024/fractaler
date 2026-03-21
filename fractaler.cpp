@@ -11,9 +11,9 @@ int getColor(int itrs)
 }
 void setPlotter(Algs alg)
 {
-    plot = alg == MANDELBROT ? mandelbrot : nullptr;
+    plot = alg == MULTIBROT ? multibrot : nullptr;
 }
-int mandelbrot(Complex c)
+int multibrot(Complex c)
 {
     Complex z{0, 0};
     int itrs = 0;

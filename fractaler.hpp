@@ -3,7 +3,7 @@
 #define BAILOUT 4.0
 enum Algs
 {
-    MANDELBROT,
+    MULTIBROT,
 };
 using Plotter = int (*)(Complex);
 struct Params
@@ -15,5 +15,5 @@ extern Params params;
 extern double maxItrs;
 extern Plotter plot;
 int getColor(int itrs);
-int mandelbrot(Complex c);
+int multibrot(Complex c);
 void setPlotter(Algs alg);
