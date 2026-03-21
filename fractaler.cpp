@@ -1,12 +1,14 @@
 #include "fractaler.hpp"
-int Fractaler::getColor(int itrs)
+double maxItrs = 100;
+Plotter plot = nullptr;
+int getColor(int itrs)
 {
     if (itrs == maxItrs)
         return 0xFF000000;
     int c = (itrs * 255) / maxItrs;
     return (255 << 24) | (c << 16) | (c << 8) | c;
 }
-int Fractaler::mandelbrot(Complex c)
+int mandelbrot(Complex c)
 {
     Complex z{0, 0};
     int itrs = 0;
@@ -16,4 +18,8 @@ int Fractaler::mandelbrot(Complex c)
         itrs++;
     }
     return getColor(itrs);
+}
+void setPlotter(Algs alg)
+{
+    plot = alg == MANDELBROT ? mandelbrot : nullptr;
 }

@@ -8,7 +8,7 @@ Rectangle canvas = {0, 0, screenWidth * 0.8f, screenHeight};
 float controlsWidth = screenWidth - canvas.width, controlsHeight = 20;
 float controlsOffset = 50;
 double minX = -2.5, minY = -1.5, maxX = 1.5, maxY = 1.5;
-void drawFractal(const Fractaler &fractaler, int *pixels)
+void drawFractal(int *pixels)
 {
     double dx = (maxX - minX) / canvas.width;
     double dy = (maxY - minY) / canvas.height;
@@ -19,7 +19,7 @@ void drawFractal(const Fractaler &fractaler, int *pixels)
         {
             double mapX = minX + x * dx;
             double mapY = maxY - y * dy;
-            pixels[y * (int)canvas.width + x] = fractaler.plot(Complex{mapX, mapY});
+            pixels[y * (int)canvas.width + x] = plot(Complex{mapX, mapY});
         }
     }
 }
@@ -59,7 +59,6 @@ int main(void)
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
     int *pixels = (int *)img.data;
     Texture2D tex = LoadTextureFromImage(img);
-    Fractaler fractaler{canvas.width, canvas.height, maxIterations};
     while (!WindowShouldClose())
     {
         float y = controlsHeight;
@@ -67,9 +66,9 @@ int main(void)
         ClearBackground(BLACK);
         if (needsUpdate)
         {
-            if (fractaler.plot != nullptr)
+            if (plot != nullptr)
             {
-                drawFractal(fractaler, pixels);
+                drawFractal(pixels);
                 UpdateTexture(tex, pixels);
             }
             needsUpdate = false;
@@ -95,13 +94,13 @@ int main(void)
         controlsPos.y = controlsHeight;
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
         {
-            fractaler.maxItrs = maxIterations;
+            maxItrs = maxIterations;
             editMaxItrsMode = !editMaxItrsMode;
         }
         controlsPos.y += controlsHeight;
         if (GuiButton(controlsPos, "Start"))
         {
-            fractaler.setPlotter((Algs)algChoice);
+            setPlotter((Algs)algChoice);
             reset();
             needsUpdate = true;
         }
