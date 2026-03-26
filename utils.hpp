@@ -1,8 +1,13 @@
 #include <math.h>
+#include <string>
+#include <vector>
+#include <sstream>
+using namespace std;
 class Complex
 {
 public:
     double x, y;
+    Complex() : x(0), y(0) {};
     Complex(double x, double y) : x(x), y(y) {};
     Complex operator+(const Complex &oth) const { return {x + oth.x, y + oth.y}; }
     Complex operator-(const Complex &oth) const { return {x - oth.x, y - oth.y}; }
@@ -44,4 +49,29 @@ public:
         double imag = a * theta + b * log(r);
         return {mul * cos(imag), mul * sin(imag)};
     }
+};
+class PolynomialTerm
+{
+public:
+    Complex coeff;
+    double pow = 0;
+    PolynomialTerm(double coeffx, double coeffy, double pow)
+    {
+        this->coeff = {coeffx, coeffy};
+        this->pow = pow;
+    };
+    PolynomialTerm differentiate(int degree)
+    {
+        if (pow == 0)
+            return PolynomialTerm{0, 0, 0};
+        double cx = coeff.x, cy = coeff.y, p = pow;
+        for (int i = 0; i < degree; i++)
+        {
+            cx *= p;
+            cy *= p;
+            p--;
+        }
+        return PolynomialTerm{cx, cy, p};
+    }
+    Complex substitute(const Complex &z) { return (z * coeff).power(pow); }
 };
