@@ -68,4 +68,14 @@ TEST_CASE("Testing Polynomial class")
         checkComplex(poly.terms[2].coeff, 13, 5);
         CHECK_EQ(poly.terms[2].pow, 0);
     }
+    SUBCASE("Testing differentiation")
+    {
+        Polynomial diff = poly.differentiate(1);
+        checkComplex(diff.terms[0].coeff, 4, -6);
+        CHECK_EQ(diff.terms[0].pow, 1);
+        checkComplex(diff.terms[1].coeff, 4, -2);
+        CHECK_EQ(diff.terms[1].pow, 0);
+        checkComplex(diff.terms[2].coeff, 0, 0);
+        CHECK_EQ(diff.terms[2].pow, 0);
+    }
 }

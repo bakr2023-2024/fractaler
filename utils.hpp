@@ -62,7 +62,7 @@ public:
         this->coeff = {coeffx, coeffy};
         this->pow = pow;
     };
-    PolynomialTerm differentiate(int degree)
+    PolynomialTerm differentiate(int degree) const
     {
         if (pow == 0)
             return PolynomialTerm{0, 0, 0};
@@ -75,12 +75,16 @@ public:
         }
         return PolynomialTerm{cx, cy, p};
     }
-    Complex substitute(const Complex &z) { return coeff * (z.power(pow)); }
+    Complex substitute(const Complex &z) const { return coeff * (z.power(pow)); }
 };
 class Polynomial
 {
 public:
     vector<PolynomialTerm> terms;
+    Polynomial(const vector<PolynomialTerm> &terms)
+    {
+        this->terms = terms;
+    }
     Polynomial(const string &s)
     {
         bool inParen = false;
@@ -128,5 +132,13 @@ public:
             else
                 terms.push_back({cx, cy, pow});
         }
+    }
+    Polynomial differentiate(int degree)
+    {
+        vector<PolynomialTerm> poly;
+        poly.reserve(terms.size());
+        for (const PolynomialTerm &term : terms)
+            poly.push_back(term.differentiate(degree));
+        return {poly};
     }
 };
