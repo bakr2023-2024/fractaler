@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 using namespace std;
 class Complex
 {
@@ -14,7 +15,7 @@ public:
     Complex operator*(const Complex &oth) const { return {x * oth.x - y * oth.y, x * oth.y + y * oth.x}; }
     Complex operator/(const Complex &oth) const
     {
-        double denom = oth.x * oth.x + oth.y * oth.y;
+        double denom = oth.mag2();
         Complex num = Complex{x, y} * Complex{oth.x, -oth.y};
         return {num.x / denom, num.y / denom};
     }
@@ -45,8 +46,9 @@ public:
         }
         double r = mag();
         double theta = atan2(y, x);
-        double mul = pow(r, a) * exp(-b * theta);
-        double imag = a * theta + b * log(r);
+        double logR = log(r);
+        double mul = exp(a * logR - b * theta);
+        double imag = a * theta + b * logR;
         return {mul * cos(imag), mul * sin(imag)};
     }
 };
@@ -73,5 +75,5 @@ public:
         }
         return PolynomialTerm{cx, cy, p};
     }
-    Complex substitute(const Complex &z) { return (z * coeff).power(pow); }
+    Complex substitute(const Complex &z) { return coeff * (z.power(pow)); }
 };
