@@ -6,6 +6,7 @@ float screenWidth = 1280, screenHeight = 720;
 Rectangle canvas = {0, 0, screenWidth * 0.8f, screenHeight};
 
 float controlsWidth = screenWidth - canvas.width, controlsHeight = 20;
+float yGap = 10;
 float controlsOffset = 50;
 double minX = -2.5, minY = -1.5, maxX = 1.5, maxY = 1.5;
 void drawFractal(int *pixels)
@@ -46,31 +47,39 @@ void reset()
     minY = -1.5;
     maxY = 1.5;
 }
-void createDoubleInput(Rectangle &pos, const char *label, char *input, double &val, bool &editMode)
+void createStrInput(Rectangle &pos, const char *label, char *input, bool &editMode, int size)
 {
     pos.x = canvas.width;
     pos.width = controlsOffset;
     GuiLabel(pos, label);
     pos.x = canvas.width + controlsOffset;
     pos.width = controlsWidth - controlsOffset;
-    if (GuiTextBox(pos, input, 16, editMode))
+    if (GuiTextBox(pos, input, size, editMode))
         editMode = !editMode;
+    pos.y += controlsHeight + yGap;
+}
+void createDoubleInput(Rectangle &pos, const char *label, char *input, double &val, bool &editMode)
+{
+    createStrInput(pos, label, input, editMode, 16);
     if (!editMode)
         val = atof(input);
-    pos.y += controlsHeight;
 }
 int main(void)
 {
-    const char *algs = "Multibrot;Julia;Burning Ship";
+    const char *algs = "Multibrot;Julia;Burning Ship;Newton";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";
     char cyInput[16] = "0";
+    char polyInput[100] = "";
+    std::string lastPolyInput = "";
     bool needsUpdate = false;
+    bool isStarted = false;
     bool editPInputMode = false;
     bool editQInputMode = false;
     bool editCxInputMode = false;
     bool editCyInputMode = false;
+    bool editPolyInputMode = false;
     bool editAlgsMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
@@ -87,57 +96,65 @@ int main(void)
         ClearBackground(BLACK);
         if (needsUpdate)
         {
-            if (plot != nullptr)
-            {
-                drawFractal(pixels);
-                UpdateTexture(tex, pixels);
-            }
+            drawFractal(pixels);
+            UpdateTexture(tex, pixels);
             needsUpdate = false;
         }
         DrawTexture(tex, 0, 0, WHITE);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             zoom();
-            needsUpdate = true;
+            needsUpdate = isStarted;
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
             zoom(false);
-            needsUpdate = true;
+            needsUpdate = isStarted;
         }
         if (IsKeyPressed(KEY_R))
         {
             reset();
-            needsUpdate = true;
+            needsUpdate = isStarted;
         }
+        controlsPos.y = controlsHeight + yGap;
         if (editAlgsMode)
             GuiLock();
-        controlsPos.y = controlsHeight;
 
         createDoubleInput(controlsPos, "P", pInput, params.P, editPInputMode);
         createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
         createDoubleInput(controlsPos, "cx", cxInput, params.cx, editCxInputMode);
         createDoubleInput(controlsPos, "cy", cyInput, params.cy, editCyInputMode);
-
+        createStrInput(controlsPos, "polynomial", polyInput, editPolyInputMode, 100);
+        if (!editPolyInputMode && lastPolyInput != polyInput)
+        {
+            params.poly = Polynomial(polyInput);
+            params.polyd = params.poly.differentiate(1);
+            lastPolyInput = polyInput;
+        }
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
             editMaxItrsMode = !editMaxItrsMode;
         if (!editMaxItrsMode)
             maxItrs = maxIterations;
-        controlsPos.y += controlsHeight;
+        controlsPos.y += controlsHeight + yGap;
 
         if (GuiButton(controlsPos, "Start"))
         {
-            setPlotter((Algs)algChoice);
+            setPlotter(algChoice);
             reset();
-            needsUpdate = true;
+            isStarted = true;
+            needsUpdate = isStarted;
         }
-        controlsPos.y += controlsHeight;
+        controlsPos.y += controlsHeight + yGap;
 
-        controlsPos.y = 0;
         if (editAlgsMode)
             GuiUnlock();
+        controlsPos.y = 0;
         if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
+        {
             editAlgsMode = !editAlgsMode;
+            EndDrawing();
+            continue;
+        }
         EndDrawing();
     }
 }
