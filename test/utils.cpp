@@ -58,7 +58,9 @@ TEST_CASE("Testing PolynomialTerm class")
 }
 TEST_CASE("Testing Polynomial class")
 {
-    Polynomial poly{"(2 - 3i)z^2 - (-4 + 2i)z + (13 + 5i)"};
+    Polynomial poly;
+    poly.str = "(2 - 3i)z^2 - (-4 + 2i)z + (13 + 5i)";
+    poly.parse();
     SUBCASE("Testing parsing")
     {
         checkComplex(poly.terms[0].coeff, 2, -3);
