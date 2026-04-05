@@ -71,6 +71,7 @@ int main(void)
     char qInput[16] = "0";
     char cxInput[16] = "0";
     char cyInput[16] = "0";
+    char λInput[16] = "0";
     char polyInput[100] = "";
     std::string lastPolyInput = "";
     bool needsUpdate = false;
@@ -79,6 +80,7 @@ int main(void)
     bool editQInputMode = false;
     bool editCxInputMode = false;
     bool editCyInputMode = false;
+    bool editλInputMode=false;
     bool editPolyInputMode = false;
     bool editAlgsMode = false;
     bool editMaxItrsMode = false;
@@ -124,13 +126,10 @@ int main(void)
         createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
         createDoubleInput(controlsPos, "cx", cxInput, params.cx, editCxInputMode);
         createDoubleInput(controlsPos, "cy", cyInput, params.cy, editCyInputMode);
+        createDoubleInput(controlsPos, "λ", λInput, params.λ, editλInputMode);
         createStrInput(controlsPos, "polynomial", polyInput, editPolyInputMode, 100);
-        if (!editPolyInputMode && lastPolyInput != polyInput)
-        {
-            params.poly = Polynomial(polyInput);
-            params.polyd = params.poly.differentiate(1);
-            lastPolyInput = polyInput;
-        }
+        if (!editPolyInputMode)
+            params.poly.str = polyInput;
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
             editMaxItrsMode = !editMaxItrsMode;
         if (!editMaxItrsMode)

@@ -4,7 +4,15 @@ int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
 Plotter plotters[] = {multibrot, julia, burningShip, newton};
-void setPlotter(int choice) { plot = plotters[choice]; }
+void setPlotter(int choice)
+{
+    if (choice == 3)
+    {
+        params.poly.parse();
+        params.polyd = params.poly.differentiate();
+    }
+    plot = plotters[choice];
+}
 int getColor(int itrs)
 {
     if (itrs == maxItrs)

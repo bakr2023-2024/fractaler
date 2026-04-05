@@ -62,7 +62,7 @@ public:
         this->coeff = {coeffx, coeffy};
         this->pow = pow;
     };
-    PolynomialTerm differentiate(int degree) const
+    PolynomialTerm differentiate(int degree = 1) const
     {
         if (pow == 0)
             return PolynomialTerm{0, 0, 0};
@@ -80,20 +80,17 @@ public:
 class Polynomial
 {
 public:
+    string str;
     vector<PolynomialTerm> terms;
     Polynomial(){}
-    Polynomial(const vector<PolynomialTerm> &terms)
+    Polynomial(const vector<PolynomialTerm> &terms) : terms(terms) {}
+    void parse()
     {
-        this->terms = terms;
-    }
-    Polynomial(const string &s)
-    {
-        if (s.empty())
+        if (str.empty())
             return;
         bool inParen = false;
         vector<string> tokens{};
         string token = "";
-        string str = s;
         str.erase(remove(str.begin(), str.end(), ' '), str.end());
         for (int i = 0; i < str.size(); i++)
         {
@@ -136,7 +133,7 @@ public:
                 terms.push_back({cx, cy, pow});
         }
     }
-    Polynomial differentiate(int degree)
+    Polynomial differentiate(int degree = 1)
     {
         vector<PolynomialTerm> poly;
         poly.reserve(terms.size());

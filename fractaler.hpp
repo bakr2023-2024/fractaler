@@ -4,7 +4,7 @@
 using Plotter = int (*)(const Complex &);
 struct Params
 {
-    double P, Q, cx, cy = 0;
+    double P, Q, cx, cy, λ = 0;
     Polynomial poly, polyd;
 };
 // params
