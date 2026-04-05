@@ -2,6 +2,7 @@
 #include "doctest.h"
 #include "../utils.hpp"
 #include <format>
+#include <iostream>
 TEST_CASE("Testing Complex class")
 {
     SUBCASE("Testing addition")
@@ -33,5 +34,22 @@ TEST_CASE("Testing Complex class")
         double mag = Complex{3, 5}.mag();
         CHECK_GT(mag, 5.83);
         CHECK_LT(mag, 5.84);
+    }
+}
+TEST_CASE("Testing PolynomialTerm class")
+{
+    PolynomialTerm term{-2, 3, 2};
+    SUBCASE("Testing substitution")
+    {
+        Complex res = term.substitute({4, 2});
+        CHECK_EQ(res.x, -72);
+        CHECK_EQ(res.y, 4);
+    }
+    SUBCASE("Testing differentiation")
+    {
+        PolynomialTerm diff = term.differentiate(2);
+        CHECK_EQ(diff.coeff.x, -4);
+        CHECK_EQ(diff.coeff.y, 6);
+        CHECK_EQ(diff.pow, 0);
     }
 }
