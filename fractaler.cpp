@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -64,6 +64,22 @@ int newton(const Complex &zn)
     while (itrs < maxItrs)
     {
         z = zp - (params.poly.substitute(zp) / params.polyd.substitute(zp));
+        if (abs(z.x - zp.x) < tol && abs(z.y - zp.y) < tol)
+            break;
+        zp = z;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int nova(const Complex &c)
+{
+    Complex z = params.λ == 0 ? c : Complex{params.cx, params.cy};
+    Complex zp = z;
+    Complex a{params.P, params.Q};
+    int itrs = 0;
+    while (itrs < maxItrs)
+    {
+        z = zp - (a * (params.poly.substitute(zp) / params.polyd.substitute(zp))) + c;
         if (abs(z.x - zp.x) < tol && abs(z.y - zp.y) < tol)
             break;
         zp = z;

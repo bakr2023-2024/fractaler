@@ -18,4 +18,5 @@ int multibrot(const Complex &c);
 int julia(const Complex &c);
 int burningShip(const Complex &c);
 int newton(const Complex &z);
+int nova(const Complex &z);
 void setPlotter(int choice);
