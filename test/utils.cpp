@@ -78,4 +78,9 @@ TEST_CASE("Testing Polynomial class")
         checkComplex(diff.terms[2].coeff, 0, 0);
         CHECK_EQ(diff.terms[2].pow, 0);
     }
+    SUBCASE("Testing substitution")
+    {
+        Complex res = poly.substitute({5, -3});
+        checkComplex(res, -31, -125);
+    }
 }

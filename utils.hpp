@@ -141,4 +141,11 @@ public:
             poly.push_back(term.differentiate(degree));
         return {poly};
     }
+    Complex substitute(const Complex &z)
+    {
+        Complex res{0, 0};
+        for (const PolynomialTerm &term : terms)
+            res = res + term.substitute(z);
+        return res;
+    }
 };
