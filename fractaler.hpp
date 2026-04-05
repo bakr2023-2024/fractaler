@@ -1,24 +1,21 @@
 #pragma once
 #include "utils.hpp"
 #define BAILOUT 4.0
-enum Algs
-{
-    MULTIBROT,
-    JULIA,
-    BURNING_SHIP
-};
-using Plotter = int (*)(Complex);
+using Plotter = int (*)(const Complex &);
 struct Params
 {
     double P, Q, cx, cy = 0;
+    Polynomial poly, polyd;
 };
 // params
 extern Params params;
 extern int maxItrs;
+extern double tol;
 extern Plotter plot;
 extern Plotter plotters[];
 int getColor(int itrs);
-int multibrot(Complex c);
-int julia(Complex c);
-int burningShip(Complex c);
-void setPlotter(Algs alg);
+int multibrot(const Complex &c);
+int julia(const Complex &c);
+int burningShip(const Complex &c);
+int newton(const Complex &z);
+void setPlotter(int choice);

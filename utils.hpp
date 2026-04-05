@@ -81,12 +81,15 @@ class Polynomial
 {
 public:
     vector<PolynomialTerm> terms;
+    Polynomial(){}
     Polynomial(const vector<PolynomialTerm> &terms)
     {
         this->terms = terms;
     }
     Polynomial(const string &s)
     {
+        if (s.empty())
+            return;
         bool inParen = false;
         vector<string> tokens{};
         string token = "";
