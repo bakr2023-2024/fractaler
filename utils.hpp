@@ -77,3 +77,56 @@ public:
     }
     Complex substitute(const Complex &z) { return coeff * (z.power(pow)); }
 };
+class Polynomial
+{
+public:
+    vector<PolynomialTerm> terms;
+    Polynomial(const string &s)
+    {
+        bool inParen = false;
+        vector<string> tokens{};
+        string token = "";
+        string str = s;
+        str.erase(remove(str.begin(), str.end(), ' '), str.end());
+        for (int i = 0; i < str.size(); i++)
+        {
+            if (str[i] == '(')
+                inParen = true;
+            else if (str[i] == ')')
+                inParen = false;
+            if ((str[i] == '+' || str[i] == '-') && !inParen)
+            {
+                if (!token.empty())
+                    tokens.push_back(token);
+                token = str[i];
+            }
+            else
+                token += str[i];
+        }
+        if (!token.empty())
+            tokens.push_back(token);
+        double cx = 0, cy = 0, pow = 0;
+        for (string &term : tokens)
+        {
+            token = "";
+            int i = 0;
+            i = term.find('(') + 1;
+            token += term[i];
+            i++;
+            while (i < term.size() && term[i] != '+' && term[i] != '-')
+                token += term[i++];
+            cx = stod(token);
+            token = "";
+            while (i < term.size() && term[i] != 'i')
+                token += term[i++];
+            cy = stod(token);
+            i += 2;
+            pow = i >= term.size() ? 0 : i == (term.size() - 1) ? 1
+                                                                : pow = stod(term.substr(i + 2));
+            if ((term[0] == '-'))
+                terms.push_back({-cx, -cy, pow});
+            else
+                terms.push_back({cx, cy, pow});
+        }
+    }
+};
