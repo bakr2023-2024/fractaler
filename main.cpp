@@ -66,7 +66,7 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 }
 int main(void)
 {
-    const char *algs = "Multibrot;Julia;Burning Ship;Newton";
+    const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";
@@ -75,7 +75,6 @@ int main(void)
     char polyInput[100] = "";
     std::string lastPolyInput = "";
     bool needsUpdate = false;
-    bool isStarted = false;
     bool editPInputMode = false;
     bool editQInputMode = false;
     bool editCxInputMode = false;
@@ -98,25 +97,28 @@ int main(void)
         ClearBackground(BLACK);
         if (needsUpdate)
         {
-            drawFractal(pixels);
-            UpdateTexture(tex, pixels);
+            if (plot != nullptr)
+            {
+                drawFractal(pixels);
+                UpdateTexture(tex, pixels);
+            }
             needsUpdate = false;
         }
         DrawTexture(tex, 0, 0, WHITE);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             zoom();
-            needsUpdate = isStarted;
+            needsUpdate = true;
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
         {
             zoom(false);
-            needsUpdate = isStarted;
+            needsUpdate = true;
         }
         if (IsKeyPressed(KEY_R))
         {
             reset();
-            needsUpdate = isStarted;
+            needsUpdate = true;
         }
         controlsPos.y = controlsHeight + yGap;
         if (editAlgsMode)
@@ -126,7 +128,7 @@ int main(void)
         createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
         createDoubleInput(controlsPos, "cx", cxInput, params.cx, editCxInputMode);
         createDoubleInput(controlsPos, "cy", cyInput, params.cy, editCyInputMode);
-        createDoubleInput(controlsPos, "λ", λInput, params.λ, editλInputMode);
+        createDoubleInput(controlsPos, "delta", λInput, params.λ, editλInputMode);
         createStrInput(controlsPos, "polynomial", polyInput, editPolyInputMode, 100);
         if (!editPolyInputMode)
             params.poly.str = polyInput;
@@ -140,8 +142,7 @@ int main(void)
         {
             setPlotter(algChoice);
             reset();
-            isStarted = true;
-            needsUpdate = isStarted;
+            needsUpdate = true;
         }
         controlsPos.y += controlsHeight + yGap;
 

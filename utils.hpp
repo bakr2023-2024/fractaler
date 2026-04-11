@@ -82,22 +82,10 @@ class Polynomial
 public:
     string str;
     vector<PolynomialTerm> terms;
-    vector<Complex> coeffs;
-    double maxPow = 0;
 
     Polynomial(){}
     Polynomial(const vector<PolynomialTerm> &terms) : terms(terms)
     {
-        buildCoeffs();
-    }
-    void buildCoeffs()
-    {
-        maxPow = 0;
-        for (auto &term : terms)
-            maxPow = max(maxPow, term.pow);
-        coeffs = vector<Complex>((int)maxPow + 1, {0, 0});
-        for (auto &term : terms)
-            coeffs[(int)term.pow] = coeffs[(int)term.pow] + term.coeff;
     }
     void parse()
     {
@@ -147,7 +135,6 @@ public:
             else
                 terms.push_back({cx, cy, pow});
         }
-        buildCoeffs();
     }
     Polynomial differentiate(int degree = 1)
     {
@@ -159,11 +146,9 @@ public:
     }
     Complex substitute(const Complex &z)
     {
-        Complex res = coeffs[(int)maxPow];
-        for (int i = (int)maxPow - 1; i >= 0; i--)
-        {
-            res = res * z + coeffs[i];
-        }
+        Complex res = {0, 0};
+        for (auto &term : terms)
+            res = res + z.power(term.pow) * term.coeff;
         return res;
     }
 };
