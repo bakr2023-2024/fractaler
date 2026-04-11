@@ -51,6 +51,10 @@ public:
         double imag = a * theta + b * logR;
         return {mul * cos(imag), mul * sin(imag)};
     }
+    Complex sine() const
+    {
+        return Complex{sin(x) * cosh(y), cos(x) * sinh(y)};
+    }
 };
 class PolynomialTerm
 {
