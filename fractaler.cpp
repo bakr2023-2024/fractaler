@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -84,6 +84,30 @@ int nova(const Complex &c)
             break;
         zp = z;
         itrs++;
+    }
+    return getColor(itrs);
+}
+int sin(const Complex &z)
+{
+    Complex c{params.cx, params.cy};
+    Complex zn = z;
+    double b = 50 * BAILOUT;
+    int itrs = 0;
+    if (params.λ == 0)
+    {
+        while (abs(zn.y) < b && itrs < maxItrs)
+        {
+            zn = zn.sine() * c;
+            itrs++;
+        }
+    }
+    else
+    {
+        while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+        {
+            zn = zn.sine() * c;
+            itrs++;
+        }
     }
     return getColor(itrs);
 }
