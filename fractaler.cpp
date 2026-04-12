@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -158,6 +158,18 @@ int collatz(const Complex &z)
     while (abs(zn.y) < BAILOUT && itrs < maxItrs)
     {
         zn = (zn.multiply(4).plus(1, 0) - (zn.multiply(2).plus(1, 0) * (zn.multiply(M_PI, 0).cosine()))).divide(4);
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int septagon(const Complex &z)
+{
+    double phi = -0.7 / 5;
+    Complex zn = z;
+    int itrs = 0;
+    while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        zn = zn.power(7).plus(phi) / zn;
         itrs++;
     }
     return getColor(itrs);

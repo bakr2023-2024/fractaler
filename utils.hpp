@@ -11,28 +11,28 @@ public:
     double x, y;
     Complex() : x(0), y(0) {};
     Complex(double x, double y) : x(x), y(y) {};
-    Complex operator+(const Complex &oth) const { return {x + oth.x, y + oth.y}; }
-    Complex operator-(const Complex &oth) const { return {x - oth.x, y - oth.y}; }
-    Complex operator*(const Complex &oth) const { return {x * oth.x - y * oth.y, x * oth.y + y * oth.x}; }
-    Complex operator/(const Complex &oth) const
+    Complex inline operator+(const Complex &oth) const { return {x + oth.x, y + oth.y}; }
+    Complex inline operator-(const Complex &oth) const { return {x - oth.x, y - oth.y}; }
+    Complex inline operator*(const Complex &oth) const { return {x * oth.x - y * oth.y, x * oth.y + y * oth.x}; }
+    Complex inline operator/(const Complex &oth) const
     {
         double denom = oth.mag2();
         Complex num = Complex{x, y} * Complex{oth.x, -oth.y};
         return {num.x / denom, num.y / denom};
     }
-    Complex operator^(const Complex &oth) const { return power(oth.x, oth.y); }
-    Complex plus(double real, double imag = 0) const { return Complex{x + real, y + imag}; };
-    Complex minus(double real, double imag = 0) const { return Complex{x - real, y - imag}; };
-    Complex multiply(double real, double imag = 0) const { return {x * real - y * imag, x * imag + y * real}; };
-    Complex divide(double real, double imag = 0) const
+    Complex inline operator^(const Complex &oth) const { return power(oth.x, oth.y); }
+    Complex inline plus(double real, double imag = 0) const { return Complex{x + real, y + imag}; };
+    Complex inline minus(double real, double imag = 0) const { return Complex{x - real, y - imag}; };
+    Complex inline multiply(double real, double imag = 0) const { return {x * real - y * imag, x * imag + y * real}; };
+    Complex inline divide(double real, double imag = 0) const
     {
         double denom = real * real + imag * imag;
         Complex num = this->multiply(real, -imag);
         return {num.x / denom, num.y / denom};
     };
-    double mag() const { return sqrt(x * x + y * y); }
-    double mag2() const { return x * x + y * y; }
-    Complex absolute() const { return Complex{abs(x), abs(y)}; };
+    double inline mag() const { return sqrt(x * x + y * y); }
+    double inline mag2() const { return x * x + y * y; }
+    Complex inline absolute() const { return Complex{abs(x), abs(y)}; };
     Complex power(double a, double b = 0) const
     {
         if (b == 0)
@@ -62,19 +62,19 @@ public:
         double imag = a * theta + b * logR;
         return {mul * cos(imag), mul * sin(imag)};
     }
-    Complex sine() const
+    Complex inline sine() const
     {
         return Complex{sin(x) * cosh(y), cos(x) * sinh(y)};
     }
-    Complex cosine() const
+    Complex inline cosine() const
     {
         return Complex{cos(x) * cosh(y), -sin(x) * sinh(y)};
     }
-    Complex sineh() const
+    Complex inline sineh() const
     {
         return Complex{sinh(x) * cos(y), cosh(x) * sin(y)};
     }
-    Complex cosineh() const
+    Complex inline cosineh() const
     {
         return Complex{cosh(x) * cos(y), sinh(x) * sin(y)};
     }
