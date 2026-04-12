@@ -20,6 +20,15 @@ public:
         return {num.x / denom, num.y / denom};
     }
     Complex operator^(const Complex &oth) const { return power(oth.x, oth.y); }
+    Complex plus(double real, double imag = 0) const { return Complex{x + real, y + imag}; };
+    Complex minus(double real, double imag = 0) const { return Complex{x - real, y - imag}; };
+    Complex multiply(double real, double imag = 0) const { return {x * real - y * imag, x * imag + y * real}; };
+    Complex divide(double real, double imag = 0) const
+    {
+        double denom = real * real + imag * imag;
+        Complex num = this->multiply(real, -imag);
+        return {num.x / denom, num.y / denom};
+    };
     double mag() const { return sqrt(x * x + y * y); }
     double mag2() const { return x * x + y * y; }
     Complex absolute() const { return Complex{abs(x), abs(y)}; };
