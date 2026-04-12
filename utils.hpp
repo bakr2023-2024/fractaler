@@ -63,6 +63,10 @@ public:
     {
         return Complex{sinh(x) * cos(y), cosh(x) * sin(y)};
     }
+    Complex cosineh() const
+    {
+        return Complex{cosh(x) * cos(y), sinh(x) * sin(y)};
+    }
 };
 class PolynomialTerm
 {
