@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon, magnet1};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -170,6 +170,20 @@ int septagon(const Complex &z)
     while (zn.mag2() <= BAILOUT && itrs < maxItrs)
     {
         zn = zn.power(7).plus(phi) / zn;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int magnet1(const Complex &c)
+{
+    Complex z = params.λ == 0 ? Complex{0, 0} : c;
+    Complex cp = params.λ == 0 ? cp : Complex{params.cx, params.cy};
+    int itrs = 0;
+    while (z.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        Complex numer = z.power(2) + (c).minus(1);
+        Complex denom = z.multiply(2) + (c).minus(2);
+        z = (numer / denom).power(2);
         itrs++;
     }
     return getColor(itrs);
