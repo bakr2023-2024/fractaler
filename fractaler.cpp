@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -91,13 +91,13 @@ int sin(const Complex &z)
 {
     Complex c{params.cx, params.cy};
     Complex zn = z;
-    double b = 50 * BAILOUT;
     int itrs = 0;
-    if (params.λ == 0)
+    if (params.λ != 0)
     {
+        double b = params.λ * BAILOUT;
         while (abs(zn.y) < b && itrs < maxItrs)
         {
-            zn = zn.sine() * c;
+            zn = zn.sine().power(params.P) + c;
             itrs++;
         }
     }
@@ -105,7 +105,31 @@ int sin(const Complex &z)
     {
         while (zn.mag2() <= BAILOUT && itrs < maxItrs)
         {
-            zn = zn.sine() * c;
+            zn = zn.sine().power(params.P) * c;
+            itrs++;
+        }
+    }
+    return getColor(itrs);
+}
+int sinh(const Complex &z)
+{
+    Complex zn = z;
+    Complex c{params.cx, params.cy};
+    int itrs = 0;
+    if (params.λ != 0)
+    {
+        double b = params.λ * BAILOUT;
+        while (abs(zn.y) < b && itrs < maxItrs)
+        {
+            zn = zn.sineh().power(params.P) + c;
+            itrs++;
+        }
+    }
+    else
+    {
+        while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+        {
+            zn = zn.sineh().power(params.P) + c;
             itrs++;
         }
     }

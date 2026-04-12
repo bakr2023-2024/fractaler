@@ -20,4 +20,5 @@ int burningShip(const Complex &c);
 int newton(const Complex &z);
 int nova(const Complex &z);
 int sin(const Complex &z);
+int sinh(const Complex &z);
 void setPlotter(int choice);
