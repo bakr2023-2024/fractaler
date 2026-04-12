@@ -25,4 +25,5 @@ int newtonCosh(const Complex &z);
 int collatz(const Complex &z);
 int septagon(const Complex &z);
 int magnet1(const Complex &c);
+int magnet2(const Complex &c);
 void setPlotter(int choice);

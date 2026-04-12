@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon, magnet1};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon, magnet1, magnet2};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -183,6 +183,26 @@ int magnet1(const Complex &c)
     {
         Complex numer = z.power(2) + (c).minus(1);
         Complex denom = z.multiply(2) + (c).minus(2);
+        z = (numer / denom).power(2);
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int magnet2(const Complex &c)
+{
+    Complex z = params.λ == 0 ? Complex{0, 0} : c;
+    Complex cp = params.λ == 0 ? cp : Complex{params.cx, params.cy};
+    int itrs = 0;
+    while (z.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        Complex c1 = c.minus(1);
+        Complex c2 = c.plus(2);
+        Complex z2 = z.power(2);
+        Complex z3 = z2 * z;
+        Complex c1c2 = c1 * c2;
+        Complex zzz = z.multiply(3);
+        Complex numer = z3 + zzz * (c1) + c1c2;
+        Complex denom = z2.multiply(3) + (zzz * c2) + c1c2.plus(1);
         z = (numer / denom).power(2);
         itrs++;
     }
