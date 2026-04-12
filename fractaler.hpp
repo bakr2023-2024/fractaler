@@ -22,4 +22,5 @@ int nova(const Complex &z);
 int sin(const Complex &z);
 int sinh(const Complex &z);
 int newtonCosh(const Complex &z);
+int collatz(const Complex &z);
 void setPlotter(int choice);

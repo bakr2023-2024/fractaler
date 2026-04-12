@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz};
 void setPlotter(int choice)
 {
     if (choice == 3)
@@ -141,13 +141,23 @@ int newtonCosh(const Complex &z)
     Complex zn = z;
     int itrs = 0;
     double t = tol / BAILOUT;
-
     while (itrs < maxItrs)
     {
-        zn = zn - ((zn.cosineh() - Complex{1, 0}) / zn.sineh());
+        zn = zn - ((zn.cosineh().minus(1, 0)) / zn.sineh());
         if (max(abs(zn.x - z0.x), abs(zn.y - z0.y)) < t)
             break;
         z0 = zn;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int collatz(const Complex &z)
+{
+    Complex zn = z;
+    int itrs = 0;
+    while (abs(zn.y) < BAILOUT && itrs < maxItrs)
+    {
+        zn = (zn.multiply(4).plus(1, 0) - (zn.multiply(2).plus(1, 0) * (zn.multiply(M_PI, 0).cosine()))).divide(4);
         itrs++;
     }
     return getColor(itrs);
