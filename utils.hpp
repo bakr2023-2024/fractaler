@@ -22,6 +22,7 @@ public:
     Complex operator^(const Complex &oth) const { return power(oth.x, oth.y); }
     double mag() const { return sqrt(x * x + y * y); }
     double mag2() const { return x * x + y * y; }
+    Complex absolute() const { return Complex{abs(x), abs(y)}; };
     Complex power(double a, double b = 0) const
     {
         if (b == 0)
