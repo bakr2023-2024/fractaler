@@ -177,7 +177,7 @@ int septagon(const Complex &z)
 int magnet1(const Complex &c)
 {
     Complex z = params.λ == 0 ? Complex{0, 0} : c;
-    Complex cp = params.λ == 0 ? cp : Complex{params.cx, params.cy};
+    Complex cp = params.λ == 0 ? c : Complex{params.cx, params.cy};
     int itrs = 0;
     while (z.mag2() <= BAILOUT && itrs < maxItrs)
     {
@@ -191,12 +191,12 @@ int magnet1(const Complex &c)
 int magnet2(const Complex &c)
 {
     Complex z = params.λ == 0 ? Complex{0, 0} : c;
-    Complex cp = params.λ == 0 ? cp : Complex{params.cx, params.cy};
+    Complex cp = params.λ == 0 ? c : Complex{params.cx, params.cy};
     int itrs = 0;
     while (z.mag2() <= BAILOUT && itrs < maxItrs)
     {
         Complex c1 = c.minus(1);
-        Complex c2 = c.plus(2);
+        Complex c2 = c.minus(2);
         Complex z2 = z.power(2);
         Complex z3 = z2 * z;
         Complex c1c2 = c1 * c2;
