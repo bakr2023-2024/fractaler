@@ -66,7 +66,7 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 }
 int main(void)
 {
-    const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova;Sin;Sinh;Newton Cosh;Collatz;Septagon;Magnet 1;Magnet 2;Cactus;Lambda;Barnsley Tree;Rings;Roger Rational";
+    const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova;Sin;Sinh;Newton Cosh;Collatz;Septagon;Magnet 1;Magnet 2;Cactus;Lambda;Barnsley Tree;Rings;Roger Rational;Spiral Julia";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";

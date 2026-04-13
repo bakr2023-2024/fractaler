@@ -4,7 +4,7 @@ int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
 Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh,
-                      collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree, rings, rogerRational};
+                      collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree, rings, rogerRational, spiralJulia};
 void setPlotter(int choice)
 {
     if (choice == 3 || choice == 4)
@@ -276,6 +276,18 @@ int rogerRational(const Complex &z)
         Complex g7z = g5z * gz * gz;
         zn = (zn * zn) * (gz + a) * (g3z + a) * (g5z + a) * (g7z + a) + (Complex{mag, 1} / Complex{1 + mag, 0});
         mag = zn.mag();
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int spiralJulia(const Complex &z)
+{
+    Complex zn = z;
+    Complex c{params.cx, params.cy};
+    int itrs = 0;
+    while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        zn = (zn * zn + c).tangent();
         itrs++;
     }
     return getColor(itrs);
