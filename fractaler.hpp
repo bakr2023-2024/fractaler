@@ -29,4 +29,5 @@ int magnet2(const Complex &c);
 int cactus(const Complex &z);
 int lambda(const Complex &z);
 int barnsleyTree(const Complex &z);
+int rings(const Complex &z);
 void setPlotter(int choice);

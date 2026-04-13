@@ -3,7 +3,7 @@ Params params = {};
 int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
-Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree};
+Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh, collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree, rings};
 void setPlotter(int choice)
 {
     if (choice == 3 || choice == 4)
@@ -241,6 +241,22 @@ int barnsleyTree(const Complex &z)
     {
         int sign = (zn.x > 0) - (zn.x < 0);
         zn = a * (zn.minus(sign));
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int rings(const Complex &z)
+{
+    Complex zn = z;
+    int itrs = 0;
+    double phi = 1 + sqrt(5) / 2;
+    double sigma = sqrt(params.P);
+    double theta = 2 * M_PI * phi;
+    Complex e{cos(theta), sin(theta)};
+    while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        Complex z2 = zn * zn;
+        zn = (z2 * (z2.plus(sigma)) * e) / (z2.multiply(sigma).plus(1));
         itrs++;
     }
     return getColor(itrs);
