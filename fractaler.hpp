@@ -30,4 +30,5 @@ int cactus(const Complex &z);
 int lambda(const Complex &z);
 int barnsleyTree(const Complex &z);
 int rings(const Complex &z);
+int rogerRational(const Complex &z);
 void setPlotter(int choice);
