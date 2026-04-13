@@ -4,7 +4,8 @@ int maxItrs = 100;
 double tol = 0.00001;
 Plotter plot = nullptr;
 Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh,
-                      collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree, rings, rogerRational, spiralJulia};
+                      collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree,
+                      rings, rogerRational, spiralJulia, tetration};
 void setPlotter(int choice)
 {
     if (choice == 3 || choice == 4)
@@ -288,6 +289,17 @@ int spiralJulia(const Complex &z)
     while (zn.mag2() <= BAILOUT && itrs < maxItrs)
     {
         zn = (zn * zn + c).tangent();
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int tetration(const Complex &z)
+{
+    Complex zn = z;
+    int itrs = 0;
+    while (zn.x <= BAILOUT && z.y <= BAILOUT && itrs < maxItrs)
+    {
+        zn = z ^ zn;
         itrs++;
     }
     return getColor(itrs);

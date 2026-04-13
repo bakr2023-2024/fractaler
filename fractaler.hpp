@@ -32,4 +32,5 @@ int barnsleyTree(const Complex &z);
 int rings(const Complex &z);
 int rogerRational(const Complex &z);
 int spiralJulia(const Complex &z);
+int tetration(const Complex &z);
 void setPlotter(int choice);
