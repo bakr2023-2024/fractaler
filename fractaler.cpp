@@ -5,7 +5,7 @@ double tol = 0.00001;
 Plotter plot = nullptr;
 Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh,
                       collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree,
-                      rings, rogerRational, spiralJulia, tetration};
+                      rings, rogerRational, spiralJulia, tetration, tripleDragon};
 void setPlotter(int choice)
 {
     if (choice == 3 || choice == 4)
@@ -300,6 +300,19 @@ int tetration(const Complex &z)
     while (zn.x <= BAILOUT && z.y <= BAILOUT && itrs < maxItrs)
     {
         zn = z ^ zn;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int tripleDragon(const Complex &z)
+{
+    Complex zn = z;
+    Complex c{params.cx, params.cy};
+    int itrs = 0;
+    while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        Complex z3 = zn.power(3);
+        zn = (z3 / (z3.plus(1))) + c;
         itrs++;
     }
     return getColor(itrs);
