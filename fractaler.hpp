@@ -27,4 +27,5 @@ int septagon(const Complex &z);
 int magnet1(const Complex &c);
 int magnet2(const Complex &c);
 int cactus(const Complex &z);
+int lambda(const Complex &z);
 void setPlotter(int choice);
