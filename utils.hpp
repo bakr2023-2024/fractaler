@@ -70,6 +70,7 @@ public:
     {
         return Complex{cos(x) * cosh(y), -sin(x) * sinh(y)};
     }
+    Complex inline tangent() const { return sine() / cosine(); }
     Complex inline sineh() const
     {
         return Complex{sinh(x) * cos(y), cosh(x) * sin(y)};
