@@ -4,7 +4,7 @@
 using Plotter = int (*)(const Complex &);
 struct Params
 {
-    int algChoice = 0, colorChoice = 0, maxItrs = 0;
+    int algChoice = 0, themeChoice = 0, maxItrs = 0;
     double P = 0, Q = 0, cx = 0, cy = 0, λ = 0;
     std::string polyStr;
 
@@ -12,6 +12,7 @@ struct Params
 int getColor(int itrs);
 Plotter getPlotter();
 void setParams(Params params);
+void buildPalettes();
 
 int multibrot(const Complex &c);
 int julia(const Complex &c);

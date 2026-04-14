@@ -108,3 +108,4 @@ Complex Polynomial::substitute(const Complex &z)
         res = res + z.power(term.pow) * term.coeff;
     return res;
 }
+

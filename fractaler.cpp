@@ -6,7 +6,10 @@ static double tol = 0.00001;
 static Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sine, sineh, newtonCosh,
                              collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree,
                              rings, rogerRational, spiralJulia, tetration, tripleDragon, iabs};
+enum class Fractals
+{
 
+};
 void setParams(Params parameters)
 {
     params = parameters;
@@ -333,10 +336,42 @@ int iabs(const Complex &z)
     return getColor(itrs);
 }
 
+struct Theme
+{
+    float a[3], b[3], c[3], d[3];
+};
+static const Theme themes[] = {
+    {{0.1f, 0.1f, 0.1f}, {0.8f, 0.8f, 0.8f}, {1.0f, 2.0f, 3.0f}, {0.0f, 0.0f, 0.5f}}, // Groovy
+    {{0.9f, 0.7f, 0.9f}, {0.7f, 0.9f, 0.7f}, {0.9f, 0.9f, 1.0f}, {0.3f, 0.5f, 0.7f}}, // Pastel
+    {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {2.0f, 2.0f, 2.0f}, {0.1f, 0.2f, 0.4f}}, // Bright
+    {{0.1f, 0.2f, 0.4f}, {0.2f, 0.3f, 0.6f}, {1.0f, 2.0f, 3.0f}, {0.1f, 0.1f, 0.5f}}, // Deep Blues
+    {{0.9f, 0.7f, 0.2f}, {1.0f, 0.8f, 0.3f}, {1.5f, 1.8f, 2.0f}, {0.0f, 0.0f, 0.3f}}, // Warm Golden
+    {{0.3f, 0.1f, 0.6f}, {1.0f, 0.4f, 0.0f}, {0.9f, 2.0f, 3.0f}, {0.5f, 0.2f, 0.3f}}, // Vibrant
+    {{0.1f, 0.1f, 0.3f}, {0.5f, 0.1f, 0.8f}, {1.0f, 1.5f, 2.0f}, {0.2f, 0.3f, 0.5f}}, // Cosmic
+    {{0.0f, 1.0f, 0.0f}, {0.9f, 0.0f, 0.9f}, {2.0f, 1.5f, 1.0f}, {0.0f, 0.5f, 0.2f}}, // Neon
+    {{0.8f, 0.5f, 0.3f}, {0.7f, 0.6f, 0.4f}, {1.0f, 1.2f, 1.5f}, {0.2f, 0.3f, 0.5f}}, // Mellow
+    {{0.4f, 0.2f, 0.1f}, {0.6f, 0.3f, 0.2f}, {1.2f, 1.5f, 2.0f}, {0.1f, 0.1f, 0.3f}}, // Earthy
+};
+static const int themesCount = sizeof(themes) / sizeof(themes[0]);
+static int palettes[themesCount][256] = {};
+void buildPalettes()
+{
+    for (int tc = 0; tc < themesCount; tc++)
+    {
+        for (int i = 0; i <= 255; i++)
+        {
+            float t = i / 255.0f;
+            int r = (int)(255 * (themes[tc].a[0] + themes[tc].b[0] * cosf(2 * M_PI * (themes[tc].c[0] * t + themes[tc].d[0]))));
+            int g = (int)(255 * (themes[tc].a[1] + themes[tc].b[1] * cosf(2 * M_PI * (themes[tc].c[1] * t + themes[tc].d[1]))));
+            int b = (int)(255 * (themes[tc].a[2] + themes[tc].b[2] * cosf(2 * M_PI * (themes[tc].c[2] * t + themes[tc].d[2]))));
+            r = max(0, min(255, r));
+            g = max(0, min(255, g));
+            b = max(0, min(255, b));
+            palettes[tc][i] = (255 << 24) | (r << 16) | (g << 8) | b;
+        }
+    }
+}
 int getColor(int itrs)
 {
-    if (itrs == params.maxItrs)
-        return 0xFF000000;
-    int c = (itrs * 255) / params.maxItrs;
-    return (255 << 24) | (c << 16) | (c << 8) | c;
+    return (itrs == params.maxItrs) ? 0 : palettes[params.themeChoice][(itrs * 255) / params.maxItrs];
 }

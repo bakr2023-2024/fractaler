@@ -67,14 +67,14 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 int main(void)
 {
     const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova;Sin;Sinh;Newton Cosh;Collatz;Septagon;Magnet 1;Magnet 2;Cactus;Lambda;Barnsley Tree;Rings;Roger Rational;Spiral Julia;Tetration;Triple Dragon;IAbs";
-    const char *colors = "Plain";
+    const char *themes = "Groovy;Pastel;Bright;Deep Blues;Warm Golden;Vibrant;Cosmic;Neon;Mellow;Earthy";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";
     char cyInput[16] = "0";
     char λInput[16] = "0";
     char polyInput[100] = "";
-    int maxIterations = 100, algChoice = 0, colorChoice = 0;
+    int maxIterations = 100, algChoice = 0, themeChoice = 0;
     double P = 0, Q = 0, cx = 0, cy = 0, λ = 0;
     bool needsUpdate = false;
     bool editPInputMode = false;
@@ -84,13 +84,14 @@ int main(void)
     bool editλInputMode=false;
     bool editPolyInputMode = false;
     bool editAlgsMode = false;
-    bool editColorsMode = false;
+    bool editThemesMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
     int *pixels = (int *)img.data;
     Texture2D tex = LoadTextureFromImage(img);
+    buildPalettes();
     while (!WindowShouldClose())
     {
         float y = controlsHeight;
@@ -122,7 +123,7 @@ int main(void)
             needsUpdate = true;
         }
         controlsPos.y = 2 * (controlsHeight + yGap);
-        if (editAlgsMode || editColorsMode)
+        if (editAlgsMode || editThemesMode)
             GuiLock();
 
         createDoubleInput(controlsPos, "P", pInput, P, editPInputMode);
@@ -137,7 +138,7 @@ int main(void)
 
         if (GuiButton(controlsPos, "Start"))
         {
-            setParams({algChoice, colorChoice, maxIterations, P, Q, cx, cy, λ, polyInput});
+            setParams({algChoice, themeChoice, maxIterations, P, Q, cx, cy, λ, polyInput});
             reset();
             needsUpdate = true;
         }
@@ -145,9 +146,9 @@ int main(void)
 
         GuiUnlock();
         controlsPos.y = controlsHeight + yGap;
-        if (GuiDropdownBox(controlsPos, colors, &colorChoice, editColorsMode))
+        if (GuiDropdownBox(controlsPos, themes, &themeChoice, editThemesMode))
         {
-            editColorsMode = !editColorsMode;
+            editThemesMode = !editThemesMode;
             EndDrawing();
             continue;
         }
