@@ -64,7 +64,7 @@ int burningShip(const Complex &zn)
     Complex c = (params.cx == 0 && params.cy == 0) ? z : Complex{params.cx, params.cy};
     while (z.mag2() <= BAILOUT && itrs < params.maxItrs)
     {
-        z = Complex{abs(z.x), -fabs(z.y)}.power(params.P) + c;
+        z = Complex{abs(z.x), fabs(z.y)}.power(params.P) - c;
         itrs++;
     }
     return getColor(itrs);
