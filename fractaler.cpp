@@ -335,8 +335,7 @@ int iabs(const Complex &z)
     return color(itrs);
 }
 
-int plain(int itrs)
-{
+int plain(int itrs){
     if (itrs == maxItrs)
         return 0xFF000000;
     int c = (itrs * 255) / maxItrs;
