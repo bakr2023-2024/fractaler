@@ -5,7 +5,7 @@ static Polynomial poly, polyd;
 static double tol = 0.00001;
 static Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sine, sineh, newtonCosh,
                              collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree,
-                             rings, rogerRational, spiralJulia, tetration, tripleDragon};
+                             rings, rogerRational, spiralJulia, tetration, tripleDragon, phoenix};
 enum class Fractals
 {
 
@@ -325,6 +325,20 @@ int tripleDragon(const Complex &z)
     {
         Complex z3 = zn.power(3);
         zn = (z3 / (z3.plus(1))) + c;
+        itrs++;
+    }
+    return getColor(itrs);
+}
+int phoenix(const Complex &z)
+{
+    Complex z_1 = {0, 0}, zn = {z.y, z.x};
+    Complex c{params.cx, params.cy}, P{params.P, params.Q};
+    int itrs = 0;
+    while (zn.mag2() <= BAILOUT && itrs < params.maxItrs)
+    {
+        Complex zp = zn;
+        zn = zn * zn + c + P * z_1;
+        z_1 = zp;
         itrs++;
     }
     return getColor(itrs);

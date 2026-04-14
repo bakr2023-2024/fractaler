@@ -34,3 +34,4 @@ int rogerRational(const Complex &z);
 int spiralJulia(const Complex &z);
 int tetration(const Complex &z);
 int tripleDragon(const Complex &z);
+int phoenix(const Complex &z);
