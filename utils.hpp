@@ -79,6 +79,7 @@ public:
     {
         return Complex{cosh(x) * cos(y), sinh(x) * sin(y)};
     }
+    Complex inline logarithm() const { return Complex{log(mag()), atan2(y, x)}; };
 };
 class PolynomialTerm
 {
