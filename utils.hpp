@@ -53,6 +53,7 @@ public:
         return Complex{cosh(x) * cos(y), sinh(x) * sin(y)};
     }
     Complex inline logarithm() const { return Complex{log(mag()), atan2(y, x)}; };
+    Complex inline conj() const { return Complex{x, -y}; };
 };
 class PolynomialTerm
 {
