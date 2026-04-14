@@ -5,6 +5,7 @@
 #include <sstream>
 #include <algorithm>
 using namespace std;
+
 class Complex
 {
 public:
@@ -65,12 +66,11 @@ public:
 class Polynomial
 {
 public:
-    string str;
     vector<PolynomialTerm> terms;
 
     Polynomial(){}
     Polynomial(const vector<PolynomialTerm> &terms) : terms(terms) {}
-    void parse();
+    void parse(std::string str);
     Polynomial differentiate(int degree = 1);
     Complex substitute(const Complex &z);
 };

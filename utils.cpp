@@ -44,7 +44,7 @@ PolynomialTerm PolynomialTerm::differentiate(int degree) const
     return PolynomialTerm{cx, cy, p};
 }
 
-void Polynomial::parse()
+void Polynomial::parse(std::string str)
 {
     if (str.empty())
         return;

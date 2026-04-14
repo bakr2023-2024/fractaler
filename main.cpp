@@ -20,7 +20,7 @@ void drawFractal(int *pixels)
         {
             double mapX = minX + x * dx;
             double mapY = maxY - y * dy;
-            pixels[y * (int)canvas.width + x] = plot(Complex{mapX, mapY});
+            pixels[y * (int)canvas.width + x] = getPlotter()(Complex{mapX, mapY});
         }
     }
 }
@@ -74,7 +74,8 @@ int main(void)
     char cyInput[16] = "0";
     char λInput[16] = "0";
     char polyInput[100] = "";
-    std::string lastPolyInput = "";
+    int maxIterations = 100, algChoice = 0, colorChoice = 0;
+    double P = 0, Q = 0, cx = 0, cy = 0, λ = 0;
     bool needsUpdate = false;
     bool editPInputMode = false;
     bool editQInputMode = false;
@@ -86,9 +87,6 @@ int main(void)
     bool editColorsMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
-    int maxIterations = 100;
-    int algChoice = 0;
-    int colorChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
     int *pixels = (int *)img.data;
@@ -100,7 +98,7 @@ int main(void)
         ClearBackground(BLACK);
         if (needsUpdate)
         {
-            if (plot != nullptr && color != nullptr)
+            if (getPlotter() != nullptr)
             {
                 drawFractal(pixels);
                 UpdateTexture(tex, pixels);
@@ -127,24 +125,19 @@ int main(void)
         if (editAlgsMode || editColorsMode)
             GuiLock();
 
-        createDoubleInput(controlsPos, "P", pInput, params.P, editPInputMode);
-        createDoubleInput(controlsPos, "Q", qInput, params.Q, editQInputMode);
-        createDoubleInput(controlsPos, "cx", cxInput, params.cx, editCxInputMode);
-        createDoubleInput(controlsPos, "cy", cyInput, params.cy, editCyInputMode);
-        createDoubleInput(controlsPos, "delta", λInput, params.λ, editλInputMode);
+        createDoubleInput(controlsPos, "P", pInput, P, editPInputMode);
+        createDoubleInput(controlsPos, "Q", qInput, Q, editQInputMode);
+        createDoubleInput(controlsPos, "cx", cxInput, cx, editCxInputMode);
+        createDoubleInput(controlsPos, "cy", cyInput, cy, editCyInputMode);
+        createDoubleInput(controlsPos, "delta", λInput, λ, editλInputMode);
         createStrInput(controlsPos, "polynomial", polyInput, editPolyInputMode, 100);
-        if (!editPolyInputMode)
-            params.poly.str = polyInput;
         if (GuiSpinner(controlsPos, "iterations", &maxIterations, 1, 1000, editMaxItrsMode))
             editMaxItrsMode = !editMaxItrsMode;
-        if (!editMaxItrsMode)
-            maxItrs = maxIterations;
         controlsPos.y += controlsHeight + yGap;
 
         if (GuiButton(controlsPos, "Start"))
         {
-            setPlotter(algChoice);
-            setColorer(colorChoice);
+            setParams({algChoice, colorChoice, maxIterations, P, Q, cx, cy, λ, polyInput});
             reset();
             needsUpdate = true;
         }
@@ -158,7 +151,6 @@ int main(void)
             EndDrawing();
             continue;
         }
-
         controlsPos.y = 0;
         if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
         {

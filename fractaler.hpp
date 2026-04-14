@@ -2,28 +2,24 @@
 #include "utils.hpp"
 #define BAILOUT 4.0
 using Plotter = int (*)(const Complex &);
-using Colorer = int (*)(int itrs);
 struct Params
 {
-    double P, Q, cx, cy, λ = 0;
-    Polynomial poly, polyd;
+    int algChoice = 0, colorChoice = 0, maxItrs = 0;
+    double P = 0, Q = 0, cx = 0, cy = 0, λ = 0;
+    std::string polyStr;
+
 };
-// params
-extern Params params;
-extern int maxItrs;
-extern double tol;
-extern Plotter plot;
-extern Plotter plotters[];
-extern Colorer color;
-extern Colorer colors[];
+int getColor(int itrs);
+Plotter getPlotter();
+void setParams(Params params);
 
 int multibrot(const Complex &c);
 int julia(const Complex &c);
 int burningShip(const Complex &c);
 int newton(const Complex &z);
 int nova(const Complex &z);
-int sin(const Complex &z);
-int sinh(const Complex &z);
+int sine(const Complex &z);
+int sineh(const Complex &z);
 int newtonCosh(const Complex &z);
 int collatz(const Complex &z);
 int septagon(const Complex &z);
@@ -39,7 +35,3 @@ int tetration(const Complex &z);
 int tripleDragon(const Complex &z);
 int iabs(const Complex &z);
 
-void setPlotter(int choice);
-
-int plain(int itrs);
-void setColorer(int choice);
