@@ -64,7 +64,7 @@ int burningShip(const Complex &zn)
     Complex c = (params.cx == 0 && params.cy == 0) ? z : Complex{params.cx, params.cy};
     while (z.mag2() <= BAILOUT && itrs < params.maxItrs)
     {
-        z = Complex{abs(z.x), fabs(z.y)}.power(params.P) - c;
+        z = Complex{fabs(z.x), fabs(z.y)}.power(params.P) - c;
         itrs++;
     }
     return getColor(itrs);
@@ -94,7 +94,7 @@ int nova(const Complex &c)
     while (itrs < params.maxItrs)
     {
         z = zp - (a * (poly.substitute(zp) / polyd.substitute(zp))) + c;
-        if (abs(z.x - zp.x) < tol && abs(z.y - zp.y) < tol)
+        if (fabs(z.x - zp.x) < tol && fabs(z.y - zp.y) < tol)
             break;
         zp = z;
         itrs++;
