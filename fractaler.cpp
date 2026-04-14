@@ -26,11 +26,23 @@ int multibrot(const Complex &c)
 {
     int itrs = 0;
     Complex z{0, 0};
-    while (z.mag2() <= BAILOUT && itrs < params.maxItrs)
+    if (params.λ == 0)
     {
-        z = z.power(params.P) + c;
-        itrs++;
+        while (z.mag2() <= BAILOUT && itrs < params.maxItrs)
+        {
+            z = z.power(params.P) + c;
+            itrs++;
+        }
     }
+    else
+    {
+        while (z.mag2() <= BAILOUT && itrs < params.maxItrs)
+        {
+            z = z.power(params.P).conj() + c;
+            itrs++;
+        }
+    }
+
     return getColor(itrs);
 }
 int julia(const Complex &zn)
