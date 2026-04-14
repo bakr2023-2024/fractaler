@@ -2,6 +2,7 @@
 #include "utils.hpp"
 #define BAILOUT 4.0
 using Plotter = int (*)(const Complex &);
+using Colorer = int (*)(int itrs);
 struct Params
 {
     double P, Q, cx, cy, λ = 0;
@@ -13,7 +14,9 @@ extern int maxItrs;
 extern double tol;
 extern Plotter plot;
 extern Plotter plotters[];
-int getColor(int itrs);
+extern Colorer color;
+extern Colorer colors[];
+
 int multibrot(const Complex &c);
 int julia(const Complex &c);
 int burningShip(const Complex &c);
@@ -34,4 +37,9 @@ int rogerRational(const Complex &z);
 int spiralJulia(const Complex &z);
 int tetration(const Complex &z);
 int tripleDragon(const Complex &z);
+int iabs(const Complex &z);
+
 void setPlotter(int choice);
+
+int plain(int itrs);
+void setColorer(int choice);

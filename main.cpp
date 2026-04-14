@@ -66,7 +66,8 @@ void createDoubleInput(Rectangle &pos, const char *label, char *input, double &v
 }
 int main(void)
 {
-    const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova;Sin;Sinh;Newton Cosh;Collatz;Septagon;Magnet 1;Magnet 2;Cactus;Lambda;Barnsley Tree;Rings;Roger Rational;Spiral Julia;Tetration;Triple Dragon";
+    const char *algs = "Multibrot;Julia;Burning Ship;Newton;Nova;Sin;Sinh;Newton Cosh;Collatz;Septagon;Magnet 1;Magnet 2;Cactus;Lambda;Barnsley Tree;Rings;Roger Rational;Spiral Julia;Tetration;Triple Dragon;IAbs";
+    const char *colors = "Plain";
     char pInput[16] = "0";
     char qInput[16] = "0";
     char cxInput[16] = "0";
@@ -82,10 +83,12 @@ int main(void)
     bool editλInputMode=false;
     bool editPolyInputMode = false;
     bool editAlgsMode = false;
+    bool editColorsMode = false;
     bool editMaxItrsMode = false;
     Rectangle controlsPos = {canvas.width + controlsOffset, 0, controlsWidth - controlsOffset, controlsHeight};
     int maxIterations = 100;
     int algChoice = 0;
+    int colorChoice = 0;
     InitWindow(screenWidth, screenHeight, "Fractaler");
     Image img = GenImageColor(canvas.width, canvas.height, BLACK);
     int *pixels = (int *)img.data;
@@ -97,7 +100,7 @@ int main(void)
         ClearBackground(BLACK);
         if (needsUpdate)
         {
-            if (plot != nullptr)
+            if (plot != nullptr && color != nullptr)
             {
                 drawFractal(pixels);
                 UpdateTexture(tex, pixels);
@@ -120,8 +123,8 @@ int main(void)
             reset();
             needsUpdate = true;
         }
-        controlsPos.y = controlsHeight + yGap;
-        if (editAlgsMode)
+        controlsPos.y = 2 * (controlsHeight + yGap);
+        if (editAlgsMode || editColorsMode)
             GuiLock();
 
         createDoubleInput(controlsPos, "P", pInput, params.P, editPInputMode);
@@ -141,13 +144,21 @@ int main(void)
         if (GuiButton(controlsPos, "Start"))
         {
             setPlotter(algChoice);
+            setColorer(colorChoice);
             reset();
             needsUpdate = true;
         }
         controlsPos.y += controlsHeight + yGap;
 
-        if (editAlgsMode)
-            GuiUnlock();
+        GuiUnlock();
+        controlsPos.y = controlsHeight + yGap;
+        if (GuiDropdownBox(controlsPos, colors, &colorChoice, editColorsMode))
+        {
+            editColorsMode = !editColorsMode;
+            EndDrawing();
+            continue;
+        }
+
         controlsPos.y = 0;
         if (GuiDropdownBox(controlsPos, algs, &algChoice, editAlgsMode))
         {
@@ -157,4 +168,6 @@ int main(void)
         }
         EndDrawing();
     }
+    CloseWindow();
+    return 0;
 }

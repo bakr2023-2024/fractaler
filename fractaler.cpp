@@ -5,7 +5,9 @@ double tol = 0.00001;
 Plotter plot = nullptr;
 Plotter plotters[] = {multibrot, julia, burningShip, newton, nova, sin, sinh, newtonCosh,
                       collatz, septagon, magnet1, magnet2, cactus, lambda, barnsleyTree,
-                      rings, rogerRational, spiralJulia, tetration, tripleDragon};
+                      rings, rogerRational, spiralJulia, tetration, tripleDragon, iabs};
+Colorer color = nullptr;
+Colorer colorers[] = {plain};
 void setPlotter(int choice)
 {
     if (choice == 3 || choice == 4)
@@ -15,12 +17,9 @@ void setPlotter(int choice)
     }
     plot = plotters[choice];
 }
-int getColor(int itrs)
+void setColorer(int choice)
 {
-    if (itrs == maxItrs)
-        return 0xFF000000;
-    int c = (itrs * 255) / maxItrs;
-    return (255 << 24) | (c << 16) | (c << 8) | c;
+    color = colorers[choice];
 }
 int multibrot(const Complex &c)
 {
@@ -31,7 +30,7 @@ int multibrot(const Complex &c)
         z = z.power(params.P) + c;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int julia(const Complex &zn)
 {
@@ -43,7 +42,7 @@ int julia(const Complex &zn)
         z = z.power(params.P) + c;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int burningShip(const Complex &zn)
 {
@@ -52,10 +51,10 @@ int burningShip(const Complex &zn)
     Complex c = (params.cx == 0 && params.cy == 0) ? z : Complex{params.cx, params.cy};
     while (z.mag2() <= BAILOUT && itrs < maxItrs)
     {
-        z = Complex{abs(z.x), -abs(z.y)}.power(params.P) + c;
+        z = Complex{abs(z.x), -fabs(z.y)}.power(params.P) + c;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int newton(const Complex &zn)
 {
@@ -66,12 +65,12 @@ int newton(const Complex &zn)
     while (itrs < maxItrs)
     {
         z = zp - (params.poly.substitute(zp) / params.polyd.substitute(zp));
-        if (abs(z.x - zp.x) < tol && abs(z.y - zp.y) < tol)
+        if (fabs(z.x - zp.x) < tol && fabs(z.y - zp.y) < tol)
             break;
         zp = z;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int nova(const Complex &c)
 {
@@ -87,7 +86,7 @@ int nova(const Complex &c)
         zp = z;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int sin(const Complex &z)
 {
@@ -97,7 +96,7 @@ int sin(const Complex &z)
     if (params.λ != 0)
     {
         double b = params.λ * BAILOUT;
-        while (abs(zn.y) < b && itrs < maxItrs)
+        while (fabs(zn.y) < b && itrs < maxItrs)
         {
             zn = zn.sine().power(params.P) + c;
             itrs++;
@@ -111,7 +110,7 @@ int sin(const Complex &z)
             itrs++;
         }
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int sinh(const Complex &z)
 {
@@ -121,7 +120,7 @@ int sinh(const Complex &z)
     if (params.λ != 0)
     {
         double b = params.λ * BAILOUT;
-        while (abs(zn.y) < b && itrs < maxItrs)
+        while (fabs(zn.y) < b && itrs < maxItrs)
         {
             zn = zn.sineh().power(params.P) + c;
             itrs++;
@@ -135,7 +134,7 @@ int sinh(const Complex &z)
             itrs++;
         }
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int newtonCosh(const Complex &z)
 {
@@ -146,23 +145,23 @@ int newtonCosh(const Complex &z)
     while (itrs < maxItrs)
     {
         zn = zn - ((zn.cosineh().minus(1, 0)) / zn.sineh());
-        if (max(abs(zn.x - z0.x), abs(zn.y - z0.y)) < t)
+        if (max(fabs(zn.x - z0.x), fabs(zn.y - z0.y)) < t)
             break;
         z0 = zn;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int collatz(const Complex &z)
 {
     Complex zn = z;
     int itrs = 0;
-    while (abs(zn.y) < BAILOUT && itrs < maxItrs)
+    while (fabs(zn.y) < BAILOUT && itrs < maxItrs)
     {
         zn = (zn.multiply(4).plus(1, 0) - (zn.multiply(2).plus(1, 0) * (zn.multiply(M_PI, 0).cosine()))).divide(4);
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int septagon(const Complex &z)
 {
@@ -174,7 +173,7 @@ int septagon(const Complex &z)
         zn = zn.power(7).plus(phi) / zn;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int magnet1(const Complex &c)
 {
@@ -188,7 +187,7 @@ int magnet1(const Complex &c)
         z = (numer / denom).power(2);
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int magnet2(const Complex &c)
 {
@@ -208,7 +207,7 @@ int magnet2(const Complex &c)
         z = (numer / denom).power(2);
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int cactus(const Complex &z)
 {
@@ -219,7 +218,7 @@ int cactus(const Complex &z)
         zn = zn.power(3) + zn * (z.minus(1)) - z;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int lambda(const Complex &z)
 {
@@ -232,7 +231,7 @@ int lambda(const Complex &z)
         zn = a * zn * (c - zn);
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int barnsleyTree(const Complex &z)
 {
@@ -245,7 +244,7 @@ int barnsleyTree(const Complex &z)
         zn = a * (zn.minus(sign));
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int rings(const Complex &z)
 {
@@ -261,7 +260,7 @@ int rings(const Complex &z)
         zn = (z2 * (z2.plus(sigma)) * e) / (z2.multiply(sigma).plus(1));
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int rogerRational(const Complex &z)
 {
@@ -279,7 +278,7 @@ int rogerRational(const Complex &z)
         mag = zn.mag();
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int spiralJulia(const Complex &z)
 {
@@ -291,7 +290,7 @@ int spiralJulia(const Complex &z)
         zn = (zn * zn + c).tangent();
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int tetration(const Complex &z)
 {
@@ -302,7 +301,7 @@ int tetration(const Complex &z)
         zn = z ^ zn;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
 }
 int tripleDragon(const Complex &z)
 {
@@ -315,5 +314,31 @@ int tripleDragon(const Complex &z)
         zn = (z3 / (z3.plus(1))) + c;
         itrs++;
     }
-    return getColor(itrs);
+    return color(itrs);
+}
+int iabs(const Complex &z)
+{
+    Complex zn = z;
+    Complex c{params.cx, params.cy};
+    int itrs = 0;
+    Complex xn = zn;
+    while (zn.mag2() <= BAILOUT && itrs < maxItrs)
+    {
+        Complex zp = zn.power(params.P);
+        zn = zp + c;
+        zn.y = fabs(zn.y);
+        xn = zp - c;
+        xn.y = fabs(xn.y);
+        zn = zn * xn;
+        itrs++;
+    }
+    return color(itrs);
+}
+
+int plain(int itrs)
+{
+    if (itrs == maxItrs)
+        return 0xFF000000;
+    int c = (itrs * 255) / maxItrs;
+    return (255 << 24) | (c << 16) | (c << 8) | c;
 }
