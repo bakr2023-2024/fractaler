@@ -55,12 +55,12 @@ Newton's method applied to a polynomial. Converges to roots; colors by iteration
 
 | Parameter | Effect |
 |-----------|--------|
-| polynomial | The polynomial to find roots of (e.g. `z^3-1`) |
+| polynomial | The polynomial to find roots of (e.g. `(1+0i)z^3-(1+0i)`) |
 
 ---
 
 ### Nova
-Generalized Newton fractal with an additive term. Iterates `z = z - a*(f(z)/f'(z)) + c`.
+Generalized Newton fractal with an additive term. Iterates `z = z - (P,iQ)*(f(z)/f'(z)) + c`.
 
 | Parameter | Effect |
 |-----------|--------|
@@ -213,7 +213,7 @@ Rational map producing dragon-like structures. Iterates `z^3/(z^3+1) + c`.
 ---
 
 ### Phoenix
-Two-term recurrence fractal. Iterates `zn+1 = zn^2 + c + P*zn-1`.
+Two-term recurrence fractal. Iterates `zn+1 = zn^2 + c + (P,iQ)*zn-1`.
 
 | Parameter | Effect |
 |-----------|--------|
