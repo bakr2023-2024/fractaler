@@ -4,6 +4,16 @@ A real-time fractal explorer built with raylib. Left click to zoom in, right cli
 
 ---
 
+## Building
+
+Requires raylib and a compiler with OpenMP support.
+
+```bash
+g++ main.cpp fractaler.cpp utils.cpp -o fractaler -lraylib -fopenmp -lm -O2
+```
+
+---
+
 ## Parameters
 
 | Parameter | Description |
