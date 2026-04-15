@@ -92,6 +92,7 @@ int main(void)
     int *pixels = (int *)img.data;
     Texture2D tex = LoadTextureFromImage(img);
     buildPalettes();
+    SetTraceLogLevel(LOG_NONE);
     while (!WindowShouldClose())
     {
         float y = controlsHeight;
